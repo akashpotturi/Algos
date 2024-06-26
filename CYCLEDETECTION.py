@@ -73,3 +73,28 @@ def isCyclic(self, V : int , adj : List[List[int]]) -> bool :
                 if dfs(i) == True:
                     return True
         return False
+
+#directed graph using toposort(kahns algo)
+from typing import List
+from collections import deque
+class Solution:
+    
+    #Function to detect cycle in a directed graph.
+    def isCyclic(self, V : int , adj : List[List[int]]) -> bool :
+        indegree = [0]*V
+        for i in range(V):
+            for j in adj[i]:
+                indegree[j]+=1
+        q = deque()
+        for i in range(V):
+            if indegree[i] == 0:
+                q.append(i)
+        cnt = 0
+        while q:
+            node = q.popleft()
+            cnt+=1
+            for i in adj[node]:
+                indegree[i]-=1
+                if indegree[i] == 0:
+                    q.append(i)
+        return cnt!=V
